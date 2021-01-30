@@ -3,21 +3,21 @@
     <data>
         <report
             id="report_invoice_format"
-            string="Factura"
+            string="Factura Abella Legal"
             model="account.move"
             report_type="qweb-pdf"
-            name="document_format.format_report_invoice_document"
+            name="document_format.format_report_invoice_abella_legal"
             print_report_name="(object._get_report_base_filename())"
         />
-        <template id="format_report_invoice_document">
+        <template id="format_report_invoice_abella_legal">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="document_format.report_invoice_document_xtendoo" />
+                    <t t-call="document_format.report_invoice_abella_legal" />
                 </t>
             </t>
         </template>
-        <template id="document_format.report_invoice_document_xtendoo">
-            <t t-name="document_format.report_invoice_document_xtendoo">
+        <template id="document_format.report_invoice_abella_legal">
+            <t t-name="document_format.report_invoice_abella_legal">
                 <t t-call="web.basic_layout">
                     <t t-set="o" t-value="o.with_context(lang=lang)" />
                     <div class="page">
