@@ -6,91 +6,65 @@
             string="Factura Abella Legal"
             model="account.move"
             report_type="qweb-pdf"
-            name="document_format.format_report_invoice_abella_legal"
+            name="document_invoice_abella_legal.format_report_invoice_abella_legal"
             print_report_name="(object._get_report_base_filename())"
         />
         <template id="format_report_invoice_abella_legal">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="document_format.report_invoice_abella_legal" />
+                    <t t-call="document_invoice_abella_legal.report_invoice_abella_legal"/>
                 </t>
             </t>
         </template>
-        <template id="document_format.report_invoice_abella_legal">
-            <t t-name="document_format.report_invoice_abella_legal">
-                <t t-call="web.basic_layout">
-                    <t t-set="o" t-value="o.with_context(lang=lang)" />
-                    <div class="page">
+        <template id="document_invoice_abella_legal.report_invoice_abella_legal">
+            <t t-name="document_invoice_abella_legal.report_invoice_abella_legal">
+                <t t-call="document_invoice_abella_legal.external_layout_clean_abella_legal">
+                    <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                    <div
+                        class="page"
+                        style="padding-top: 50px; padding-bottom:0px; !important;"
+                    >
                         <!-- Datos del Documento-->
                         <!-- Datos del movimiento -->
                         <div style="width:50%;float:left;clear:both;margin-top:5px;">
                             <ul class="list-unstyled">
                                 <li>
-                                    <b>
-                                        <span
-                                            t-if="o.type == 'out_invoice' and o.state == 'posted'"
-                                        >Factura:</span>
-                                        <span
-                                            t-if="o.type == 'out_invoice' and o.state == 'draft'"
-                                        >Factura Borrador:</span>
-                                        <span
-                                            t-if="o.type == 'out_invoice' and o.state == 'cancel'"
-                                        >Factura Cancelada:</span>
-                                        <span
-                                            t-if="o.type == 'out_refund'"
-                                        >Nota de Credito:</span>
-                                        <span
-                                            t-if="o.type == 'in_refund'"
-                                        >Nota Credito Proveedor:</span>
-                                        <span
-                                            t-if="o.type == 'in_invoice'"
-                                        >Factura Proveedor:</span>
-                                        <span t-if="o.name != '/'" t-field="o.name" />
-                                    </b>
+                                    <span t-if="o.type == 'out_invoice' and o.state == 'posted'">
+                                        <strong>Factura Nº:</strong>
+                                    </span>
+                                    <span t-if="o.type == 'out_invoice' and o.state == 'draft'">
+                                        <strong>Factura Borrador Nº:</strong>
+                                    </span>
+                                    <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">
+                                        <strong>Factura Cancelada Nº:</strong>
+                                    </span>
+                                    <span t-if="o.type == 'out_refund'">
+                                        <strong>Nota de Credito Nº:</strong>
+                                    </span>
+                                    <span t-if="o.type == 'in_refund'">
+                                        <strong>Nota Credito Proveedor:</strong>
+                                    </span>
+                                    <span t-if="o.type == 'in_invoice'">
+                                        <strong>Factura Proveedor:</strong>
+                                    </span>
+                                    <span t-if="o.name != '/'" t-field="o.name"/>
                                 </li>
                                 <li t-if="o.invoice_date" name="invoice_date">
                                     <strong>Fecha:</strong>
-                                    <span class="m-0" t-field="o.invoice_date" />
+                                    <span class="m-0" t-field="o.invoice_date"/>
                                 </li>
-                                <li t-if="o.invoice_origin" name="origin">
-                                    <strong>Pedido:</strong>
-                                    <span class="m-0" t-field="o.invoice_origin" />
-                                </li>
-                                <li t-if="o.ref" name="reference">
-                                    <strong>Referencia:</strong>
-                                    <span class="m-0" t-field="o.ref" />
-                                </li>
-                                <li t-if="o.invoice_payment_term_id" name="reference">
-                                    <strong>Forma de Pago:</strong>
-                                    <span
-                                        class="m-0"
-                                        t-field="o.invoice_payment_term_id"
-                                    />
-                                </li>
-                                <div
-                                    class="col-auto mw-100 mb-2"
-                                    t-if="o.invoice_date_due and o.type == 'out_invoice' and o.state == 'posted'"
-                                    name="due_date"
-                                    style="display:none;"
-                                >
-                                    <strong>Due Date:</strong>
-                                    <p class="m-0" t-field="o.invoice_date_due" />
-                                </div>
-                            </ul>
-                        </div>
-                        <!-- Fin datos del movimiento -->
-                        <!-- Datos del cliente -->
-                        <div style="width:50%;float:left;margin-top:5px;">
-                            <ul class="list-unstyled">
-                                <li t-if="o.partner_id.ref">
-                                    <strong>Código Cliente:</strong>
-                                    <span class="m-0" t-field="o.partner_id.ref" />
-                                </li>
+
                                 <li t-if="o.partner_id.name">
-                                    <span t-field="o.partner_id.name" />
+                                    <strong>Clienta:</strong>
+                                    <span t-field="o.partner_id.name"/>
+                                </li>
+                                <li t-if="o.partner_id.vat">
+                                    <strong>NIF:</strong>
+                                    <span t-field="o.partner_id.vat"/>
                                 </li>
                                 <li t-if="o.partner_id.street">
-                                    <span t-field="o.partner_id.street" />
+                                    <strong>Dirección:</strong>
+                                    <span t-field="o.partner_id.street"/>
                                 </li>
                                 <li>
                                     <span
@@ -101,24 +75,16 @@
                                         t-if="o.partner_id.city"
                                         t-field="o.partner_id.city"
                                     />
-,
+                                    ,
                                     <span
                                         t-if="o.partner_id.state_id"
                                         t-field="o.partner_id.state_id.name"
                                     />
                                 </li>
-                                <li t-if="o.partner_id.country_id">
-                                    <t t-if="o.partner_id.country_id.name != 'España'">
-                                        <span t-field="o.partner_id.country_id.name" />
-                                    </t>
-                                </li>
-                                <li t-if="o.partner_id.vat">
-                                    <strong>NIF:</strong>
-                                    <span t-field="o.partner_id.vat" />
-                                </li>
+
                             </ul>
                         </div>
-                        <!-- Fin datos del cliente -->
+                        <!-- Fin datos del movimiento -->
                         <t
                             t-set="display_discount"
                             t-value="any([l.discount for l in o.invoice_line_ids])"
@@ -126,74 +92,47 @@
                         <table
                             class="table table-sm o_main_table"
                             name="invoice_line_table"
-                            style="clear:both;"
+                            style="clear: both; border: 1px solid black;"
                         >
                             <!-- Cabecera -->
                             <thead>
                                 <tr>
                                     <th
-                                        name="th_code"
-                                        class="text-left"
-                                        style="solid; black; padding: 0px; margin: 0px; width:13%; !important;font-size:0.9em;"
-                                    >
-                                        Código
-                                    </th>
-                                    <th
                                         name="th_description"
                                         class="text-left"
-                                        style="solid; black; padding: 0px; margin: 0px; width:35%; !important;font-size:0.9em;"
+                                        style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:60%; !important;font-size:0.9em;"
                                     >
-                                        Descripción
+                                        Concepto
                                     </th>
                                     <th
                                         name="th_quantity"
                                         class="text-right"
-                                        style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
+                                        style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:20%; !important;font-size:0.9em;"
                                     >
-                                        Unds
-                                    </th>
-                                    <th
-                                        name="th_priceunit"
-                                        class="text-right"
-                                        style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
-                                    >
-                                        Importe
-                                    </th>
-                                    <th
-                                        name="th_discount"
-                                        t-if="display_discount"
-                                        class="text-right"
-                                        style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
-                                        groups="product.group_discount_per_so_line"
-                                    >
-                                        Dto.%
-                                    </th>
-                                    <th
-                                        name="th_taxes"
-                                        class="text-right"
-                                        style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
-                                    >
-                                        IVA
+                                        Horas
                                     </th>
                                     <th
                                         name="th_subtotal"
                                         class="text-right"
-                                        style="solid; black; padding: 0px; margin: 0px; width:12%; !important;font-size:0.9em;"
+                                        style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:20%; !important;font-size:0.9em;"
                                     >
                                         <t
                                             groups="account.group_show_line_subtotals_tax_excluded"
-                                        >Total</t>
+                                        >Importe
+                                        </t>
                                         <t
                                             groups="account.group_show_line_subtotals_tax_included"
-                                        >Total I.I.</t>
+                                        >Importe I.I.
+                                        </t>
                                     </th>
                                 </tr>
                             </thead>
+                            <br/>
                             <!-- Fin cabecera -->
                             <!-- Lineas -->
                             <tbody class="invoice_tbody">
                                 <!-- Variables -->
-                                <t t-set="current_subtotal" t-value="0" />
+                                <t t-set="current_subtotal" t-value="0"/>
                                 <t
                                     t-set="lines"
                                     t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"
@@ -221,16 +160,8 @@
                                             name="account_invoice_line_accountable"
                                         >
                                             <td
-                                                class="text-left"
-                                                style="solid; black; padding: 0px; margin: 0px; width:13%; !important;font-size:0.9em;"
-                                            >
-                                                <span
-                                                    t-field="line.product_id.default_code"
-                                                />
-                                            </td>
-                                            <td
                                                 name="account_invoice_line_name"
-                                                style="solid; black; padding: 0px; margin: 0px; width:35%; !important;font-size:0.9em;"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:60%; !important;font-size:0.9em;"
                                             >
                                                 <t
                                                     t-set="productName"
@@ -251,45 +182,17 @@
                                             </td>
                                             <td
                                                 class="text-right"
-                                                style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:20%; !important;font-size:0.9em;"
                                             >
-                                                <span t-field="line.quantity" />
+                                                <span t-field="line.quantity"/>
                                                 <span
                                                     t-field="line.product_uom_id"
                                                     groups="uom.group_uom"
                                                 />
                                             </td>
                                             <td
-                                                t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"
-                                                style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
-                                            >
-                                                <span
-                                                    class="text-nowrap"
-                                                    t-field="line.price_unit"
-                                                />
-                                            </td>
-                                            <td
-                                                t-if="display_discount"
-                                                t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"
-                                                style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
-                                            >
-                                                <span
-                                                    class="text-nowrap"
-                                                    t-field="line.discount"
-                                                />
-                                            </td>
-                                            <td
-                                                t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"
-                                                style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
-                                            >
-                                                <span
-                                                    t-esc="', '.join(map(lambda x: str(x.amount), line.tax_ids))"
-                                                    id="line_tax_ids"
-                                                />
-                                            </td>
-                                            <td
                                                 class="text-right o_price_total"
-                                                style="solid; black; padding: 0px; margin: 0px; width:10%; !important;font-size:0.9em;"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:20%; !important;font-size:0.9em;"
                                             >
                                                 <span
                                                     class="text-nowrap"
@@ -306,20 +209,20 @@
                                         <t t-if="line.display_type == 'line_section'">
                                             <td
                                                 colspan="99"
-                                                style="solid; black; padding: 0px; margin: 0px; !important;font-size:0.9em;"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; !important;font-size:0.9em;"
                                             >
                                                 <span
                                                     t-field="line.name"
                                                     t-options="{'widget': 'text'}"
                                                 />
                                             </td>
-                                            <t t-set="current_section" t-value="line" />
-                                            <t t-set="current_subtotal" t-value="0" />
+                                            <t t-set="current_section" t-value="line"/>
+                                            <t t-set="current_subtotal" t-value="0"/>
                                         </t>
                                         <t t-if="line.display_type == 'line_note'">
                                             <td
                                                 colspan="99"
-                                                style="solid; black; padding: 0px; margin: 0px; !important;font-size:0.9em;"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; !important;font-size:0.9em;"
                                             >
                                                 <span
                                                     t-field="line.name"
@@ -336,7 +239,7 @@
                                         <tr class="is-subtotal text-right">
                                             <td
                                                 colspan="99"
-                                                style="solid; black; padding: 0px; margin: 0px; !important;font-size:0.9em;"
+                                                style="solid; black; padding: 0px; margin: 0px; font-size:0.9em; width:20%; !important;"
                                             >
                                                 <strong class="mr16">Subtotal</strong>
                                                 <span
@@ -355,7 +258,7 @@
                             <!-- Totales documento -->
                             <div id="total" class="row">
                                 <div
-                                    t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto"
+                                    t-attf-class="#{'col-12' if report_type != 'html' else 'col-sm-12 col-md-12'} ml-auto"
                                 >
                                     <table
                                         class="table table-sm"
@@ -363,38 +266,38 @@
                                     >
                                         <tr class="border-black o_subtotal">
                                             <td
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                class="text-right"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:80%; font-size:0.9em; !important;"
                                             >
                                                 <strong>Subtotal</strong>
                                             </td>
                                             <td
                                                 class="text-right"
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:20%; font-size:0.9em; !important;"
                                             >
-                                                <span t-field="o.amount_untaxed" />
+                                                <span t-field="o.amount_untaxed"/>
                                             </td>
                                         </tr>
                                         <t
                                             t-foreach="o.amount_by_group"
                                             t-as="amount_by_group"
                                         >
-                                            <tr
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
-                                            >
-                                                <t
-                                                    t-if="len(o.line_ids.filtered(lambda line: line.tax_line_id)) in [0, 1] and o.amount_untaxed == amount_by_group[2]"
-                                                >
+                                            <tr style="solid; black; padding: 0px; margin: 0px; !important;">
+                                                <t t-if="len(o.line_ids.filtered(lambda line: line.tax_line_id)) in [0, 1] and o.amount_untaxed == amount_by_group[2]">
                                                     <td
-                                                        style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                        class="text-right"
+                                                        style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:80%; font-size:0.9em; !important;"
                                                     >
-                                                        <span
-                                                            class="text-nowrap"
-                                                            t-esc="amount_by_group[0]"
-                                                        />
+                                                        <strong>
+                                                            <span
+                                                                class="text-nowrap"
+                                                                t-esc="amount_by_group[0]"
+                                                            />
+                                                        </strong>
                                                     </td>
                                                     <td
                                                         class="text-right o_price_total"
-                                                        style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                        style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:20%; font-size:0.9em; !important;"
                                                     >
                                                         <span
                                                             class="text-nowrap"
@@ -404,20 +307,23 @@
                                                 </t>
                                                 <t t-else="">
                                                     <td
-                                                        style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                        class="text-right"
+                                                        style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:80%; font-size:0.9em; !important;"
                                                     >
-                                                        <span
-                                                            t-esc="amount_by_group[0]"
-                                                        />
-                                                        <span class="text-nowrap">on
-                                                            <t
-                                                                t-esc="amount_by_group[4]"
+                                                        <strong>
+                                                            <span
+                                                                t-esc="amount_by_group[0]"
                                                             />
-                                                        </span>
+                                                            <span class="text-nowrap">on
+                                                                <t
+                                                                    t-esc="amount_by_group[4]"
+                                                                />
+                                                            </span>
+                                                        </strong>
                                                     </td>
                                                     <td
                                                         class="text-right o_price_total"
-                                                        style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                        style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:20%; font-size:0.9em; !important;"
                                                     >
                                                         <span
                                                             class="text-nowrap"
@@ -429,13 +335,14 @@
                                         </t>
                                         <tr class="border-black o_total">
                                             <td
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                class="text-right"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:80%; font-size:0.9em; !important;"
                                             >
                                                 <strong>Total</strong>
                                             </td>
                                             <td
                                                 class="text-right"
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:20%; font-size:0.9em; !important;"
                                             >
                                                 <strong>
                                                     <span
@@ -449,108 +356,88 @@
                                 </div>
                             </div>
                             <!-- Fin totales documento -->
-                            <!-- Desglose de vencimientos -->
-                            <t t-set="due_list" t-value="o.get_multi_due_list()" />
-                            <div id="duelist" class="row">
+                        </div>
+                        <div style="clear:both;"/>
+                        <br/>
+                        <div class="clearfix">
+                            <!-- Entidad Bancaria -->
+                            <div id="total" class="row">
                                 <div
-                                    t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto"
+                                    t-attf-class="#{'col-12' if report_type != 'html' else 'col-sm-12 col-md-12'} ml-auto"
                                 >
                                     <table
                                         class="table table-sm"
-                                        style="page-break-inside: avoid;font-size:0.9em;"
+                                        style="page-break-inside: avoid;"
                                     >
-                                        <tr>
+                                        <tr class="border-black">
                                             <td
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                class="text-center"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:30%; font-size:0.9em; !important;"
                                             >
-                                                <b>Fecha de vencimiento</b>
+                                                <strong>Forma de pago</strong>
                                             </td>
                                             <td
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
-                                                class="text-right"
+                                                class="text-center"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:50%; font-size:0.9em; !important;"
                                             >
-                                                <b>Importe</b>
-                                            </td>
-                                        </tr>
-                                        <tr t-foreach="due_list" t-as="due_tuple">
-                                            <td
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
-                                            >
-                                                <span
-                                                    t-esc="due_tuple[0]"
-                                                    t-options="{'widget': 'date'}"
-                                                />
+                                                <strong>Transferencia Bancaria</strong>
                                             </td>
                                             <td
-                                                class="text-right"
-                                                style="solid; black; padding: 0px; margin: 0px; !important;"
+                                                class="text-center"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:50%; font-size:0.9em; !important;"
                                             >
-                                                <span
-                                                    t-esc="due_tuple[1]"
-                                                    t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
-                                                />
+                                                <strong>Firma</strong>
                                             </td>
                                         </tr>
+                                        <tr class="border-black">
+                                            <td
+                                                class="text-center"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:30%; font-size:0.9em; !important;"
+                                            >
+                                                Entidad Bancaria
+                                            </td>
+                                            <td
+                                                class="text-center"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:50%; font-size:0.9em; !important;"
+                                            >
+                                                CAJA DE ARQUITECTOS
+                                            </td>
+                                            <td rowspan="2"
+                                                class="text-center"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:50%; font-size:0.9em; !important;"
+                                            >
+                                            </td>
+                                        </tr>
+                                        <tr class="border-black">
+                                            <td
+                                                class="text-center"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:30%; font-size:0.9em; !important;"
+                                            >
+                                                Nº Cuenta
+                                            </td>
+                                            <td
+                                                class="text-center"
+                                                style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:50%; font-size:0.9em; !important;"
+                                            >
+                                                ES32 3183 4800 5410 1438 3929
+                                            </td>
+                                        </tr>
+
                                     </table>
                                 </div>
                             </div>
-                            <!-- Fin desglose de vencimientos -->
+                            <!-- Fin Entidad Bancaria -->
                         </div>
-                        <div style="clear:both;" />
+
                         <p t-if="o.narration" name="comment">
-                            <span t-field="o.narration" />
+                            <span t-field="o.narration"/>
                         </p>
                         <p t-if="o.invoice_payment_term_id" name="payment_term">
-                            <span t-field="o.invoice_payment_term_id.note" />
+                            <span t-field="o.invoice_payment_term_id.note"/>
                         </p>
-                        <p
-                            t-if="o.fiscal_position_id.note"
-                            name="note"
-                            style="display:none;"
-                        >
-                            <span t-field="o.fiscal_position_id.note" />
-                        </p>
-                        <div
-                            id="qrcode"
-                            t-if="(o.company_id.qr_code) and (o.currency_id.name == 'EUR') and (o.invoice_partner_bank_id.acc_number != False)"
-                            style="display:none;"
-                        >
-                            <p t-if="(o.invoice_partner_bank_id.qr_code_valid)">
-                                <strong
-                                    class="text-center"
-                                >Scan me with your banking app.</strong>
-                                <br />
-                                <br />
-                                <img
-                                    class="border border-dark rounded"
-                                    t-att-src="o.invoice_partner_bank_id.build_qr_code_url(o.amount_residual, o.invoice_payment_ref or o.ref or o.name)"
-                                />
-                            </p>
-                            <p
-                                t-if="(o.invoice_partner_bank_id.qr_code_valid == False)"
-                                style="display:none;"
-                            >
-                                <strong
-                                    class="text-center"
-                                >The SEPA QR Code informations are not set correctly.</strong>
-                                <br />
-                            </p>
-                        </div>
                     </div>
                 </t>
             </t>
-        </template>
-        <!-- Bank Account -->
-        <template
-            id="document_format.without_bank_account"
-            inherit_id="account_payment_partner.report_invoice_payment_mode"
-        >
-            <xpath expr="//p[@t-if='o.payment_mode_id.note']" position="replace">
-                <p />
-            </xpath>
-            <xpath expr="//p[@t-as='partner_bank']" position="replace">
-                <p />
-            </xpath>
         </template>
     </data>
 </odoo>

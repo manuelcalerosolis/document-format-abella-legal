@@ -14,8 +14,8 @@
         ],
     "license": "AGPL-3",
     "data": [
-        "views/invoice/invoice_document.xml",
         "views/layout/external_layout_clean.xml",
+        "views/invoice/invoice_document.xml",
     ],
     "installable": True,
     "auto_install": False,
