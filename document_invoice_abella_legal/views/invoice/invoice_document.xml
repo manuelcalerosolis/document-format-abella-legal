@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
+
+        <record id="paperformat_invoice_abella_legal" model="report.paperformat">
+            <field name="name">Factura Abella Legal A4</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">38</field>
+            <field name="margin_bottom">44</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">44</field>
+            <field name="dpi">90</field>
+        </record>
+
         <report
             id="report_invoice_format"
             string="Factura Abella Legal"
@@ -8,7 +25,9 @@
             report_type="qweb-pdf"
             name="document_invoice_abella_legal.format_report_invoice_abella_legal"
             print_report_name="(object._get_report_base_filename())"
+            paperformat="document_invoice_abella_legal.paperformat_invoice_abella_legal"
         />
+
         <template id="format_report_invoice_abella_legal">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
@@ -256,13 +275,13 @@
                         </table>
                         <div class="clearfix">
                             <!-- Totales documento -->
-                            <div id="total" class="row">
+                            <div id="total" class="row" name="total">
                                 <div
                                     t-attf-class="#{'col-12' if report_type != 'html' else 'col-sm-12 col-md-12'} ml-auto"
                                 >
                                     <table
                                         class="table table-sm"
-                                        style="page-break-inside: avoid;"
+                                        style="page-break-inside: avoid; !important;"
                                     >
                                         <tr class="border-black o_subtotal">
                                             <td
@@ -314,7 +333,7 @@
                                                             <span
                                                                 t-esc="amount_by_group[0]"
                                                             />
-                                                            <span class="text-nowrap">on
+                                                            <span class="text-nowrap">en
                                                                 <t
                                                                     t-esc="amount_by_group[4]"
                                                                 />
@@ -365,6 +384,8 @@
                                 <div
                                     t-attf-class="#{'col-12' if report_type != 'html' else 'col-sm-12 col-md-12'} ml-auto"
                                 >
+<!--                                    <table>-->
+<!--                                        <tr>-->
                                     <table
                                         class="table table-sm"
                                         style="page-break-inside: avoid;"
@@ -380,7 +401,9 @@
                                                 class="text-center"
                                                 style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:50%; font-size:0.9em; !important;"
                                             >
-                                                <strong>Transferencia Bancaria</strong>
+                                                <strong>
+                                                    <p t-field="o.payment_mode_id.name" />
+                                                </strong>
                                             </td>
                                             <td
                                                 class="text-center"
@@ -424,6 +447,8 @@
                                         </tr>
 
                                     </table>
+<!--                                        </tr>-->
+<!--                                    </table>-->
                                 </div>
                             </div>
                             <!-- Fin Entidad Bancaria -->
