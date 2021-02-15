@@ -402,7 +402,12 @@
                                                 style="border: 1px solid black; solid; black; padding-top: 15px; padding-bottom:15px; margin: 0px; width:50%; font-size:0.9em; !important;"
                                             >
                                                 <strong>
-                                                    <p t-field="o.payment_mode_id.name" />
+                                                    <div t-if="'payment_mode_id' in o.fields_get()">
+                                                        <p t-field="o.payment_mode_id.name" />
+                                                    </div>
+                                                    <div t-else="">
+                                                        Transferencia
+                                                    </div>
                                                 </strong>
                                             </td>
                                             <td
