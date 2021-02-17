@@ -462,9 +462,6 @@
                         <p t-if="o.narration" name="comment">
                             <span t-field="o.narration"/>
                         </p>
-                        <p t-if="o.invoice_payment_term_id" name="payment_term">
-                            <span t-field="o.invoice_payment_term_id.note"/>
-                        </p>
                     </div>
                 </t>
             </t>

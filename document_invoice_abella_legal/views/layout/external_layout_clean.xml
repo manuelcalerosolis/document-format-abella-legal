@@ -37,27 +37,33 @@
                             </li>
                             <li>
                                 <span t-field="company.partner_id.street"/>
-                            </li>
-                            <li t-if="company.partner_id.street2">
-                                <span t-field="company.partner_id.street2"/>
-                            </li>
-                            <li>
-                                <span t-if="company.partner_id.zip" t-field="company.partner_id.zip"/>
-                                <span t-if="company.partner_id.city" t-field="company.partner_id.city"/>
-                                ,
-                                <span t-if="company.partner_id.state_id" t-field="company.partner_id.state_id.name"/>
+                                <t t-if="company.partner_id.street2">
+                                    <span t-field="company.partner_id.street2"/>
+                                </t>
+                                <t t-if="company.partner_id.zip">
+                                    <span t-field="company.partner_id.zip"/>
+                                </t>
+                                <t t-if="company.partner_id.city">
+                                    <span t-field="company.partner_id.city"/>
+                                </t>
+                                <t t-if="company.partner_id.state_id">
+                                    <span>,</span>
+                                    <span t-field="company.partner_id.state_id.name"/>
+                                </t>
                             </li>
                             <li t-if="company.phone">
                                 <i class="fa fa-phone"/>
                                 <span t-field="company.phone"/>
                             </li>
-                            <li t-if="company.email">
-                                <i class="fa fa-at"/>
-                                <span t-field="company.email"/>
-                            </li>
-                            <li t-if="company.website">
-                                <i class="fa fa-globe"/>
-                                <span t-field="company.website"/>
+                            <li>
+                                <t t-if="company.email">
+                                    <i class="fa fa-at"/>
+                                    <span t-field="company.email"/>
+                                </t>
+                                <t t-if="company.website">
+                                    <i class="fa fa-globe"/>
+                                    <span t-field="company.website"/>
+                                </t>
                             </li>
                         </ul>
                         <div t-field="company.report_footer"/>
