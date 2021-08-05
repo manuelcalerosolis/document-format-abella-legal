@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <odoo>
     <data>
+
         <template id="external_layout_clean_abella_legal">
             <t t-if="not o and doc">
                 <t t-set="o" t-value="doc"/>
@@ -88,5 +89,104 @@
                 </div>
             </div>
         </template>
+
+        <template id="external_layout_simple_abella_legal">
+            <t t-if="not o and doc">
+                <t t-set="o" t-value="doc"/>
+            </t>
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+            <div>
+                <div class="header din float-right">
+                    <img
+                        alt="Logo"
+                        t-att-src='"/document_invoice_abella_legal/static/img/logo_abella_legal.png"'
+                        style="max-height:190px;"
+                    />
+                    <ul class="list-inline">
+                        <li class="text-right">
+                            <span t-field="company.partner_id.name"/>
+                        </li>
+                        <li class="text-right">
+                            <span t-field="company.partner_id.street"/>
+                            <t t-if="company.partner_id.street2">
+                                <span t-field="company.partner_id.street2"/>
+                            </t>
+                        </li>
+                        <li class="text-right">
+                            <t t-if="company.partner_id.zip">
+                                <span t-field="company.partner_id.zip"/>
+                            </t>
+                            <t t-if="company.partner_id.city">
+                                <span t-field="company.partner_id.city"/>
+                            </t>
+                            <t t-if="company.partner_id.state_id">
+                                <span>,</span>
+                                <span t-field="company.partner_id.state_id.name"/>
+                            </t>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="article din" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+                    <div class="header_address"/>
+                    <t t-raw="0" />
+                </div>
+
+                <div class="footer o_background_footer din">
+
+                    <div t-if="company.vat">
+                        <strong t-field="company.name"/>
+                         -
+                        <strong>NIF: </strong>
+                        <strong t-field="company.vat"/>
+                    </div>
+
+                    <div class="text-center">
+                        <div t-field="company.report_footer"/>
+                    </div>
+
+                    <p/>
+
+                    <div class="text-left">
+                        <strong style="color:#e11b4e; !important;">T. </strong>
+                        <span>944 386 649 (Bizkaia) - 958 168 764 (Granada) - </span>
+
+                        <strong style="color:#e11b4e; !important;">W. </strong>
+                        <span>abellalegal.com - </span>
+
+                        <strong style="color:#e11b4e; !important;">E. </strong>
+                        <span>info@abellalegal.com - </span>
+
+                        <i style="color:#e11b4e; !important;" class="fa fa-twitter"/>
+                        <span>AbellaLegal</span>
+                    </div>
+
+                    <p/>
+
+                    <div class="footer_page">
+                        <div class="row">
+                            <div class="col-10 custom_footer">
+                                <div
+                                    class="text-muted"
+                                    style="font-size:0.6em;!important;"
+                                >
+                                    PROTECCIÓN DE DATOS: ABELLA LEGAL, S.L. es la responsable de tratamiento de los datos de carácter personal facilitados que se utilizarán con la finalidad de cumplir con el encargo contratado, facturar los servicios prestados, cobro y contabilización. Tiene derecho a acceder, rectificar y suprimir los datos dirigiéndose a info@abellalegal.com. Puede consultar el listado de tratamiento de datos y la información adicional y detallada sobre protección de datos en la política de privacidad de nuestra web: https://abellalegal.com/politica-de-proteccion-de-datos/
+                                </div>
+                            </div>
+                            <div class="col-2 text-right custom_footer">
+                                <span class="page"/>/<span class="topage"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </template>
+
     </data>
 </odoo>
