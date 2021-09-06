@@ -712,8 +712,10 @@
                             </div>
                         </div>
                     </div>
+                    <br/>
+                    <br/>
                     <p t-if="o.type in ('out_invoice', 'in_refund')">
-                        Por favor utilice ls siguiente referencia al realizar su pago :
+                        Por favor utilice la siguiente referencia al realizar su pago :
                         <b>
                             <span t-field="o.invoice_payment_ref"/>
                         </b>
