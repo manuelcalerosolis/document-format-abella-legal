@@ -528,6 +528,8 @@
                     </li>
                 </ul>
 
+                <br/>
+
                 <div class="page">
                     <h2>
                         <span style="color:#e11b4e; !important;" t-if="o.type == 'out_invoice' and o.state == 'posted'">Factura</span>
@@ -724,7 +726,7 @@
                     <p t-if="o.company_id.partner_id.bank_ids[:1]">
                         A ingresar en :
                         <span t-field="o.company_id.partner_id.bank_ids[:1].bank_id.name"/>
-                        ;
+                        ,
                         <span t-field="o.company_id.partner_id.bank_ids[:1].acc_number"/>
                     </p>
 
